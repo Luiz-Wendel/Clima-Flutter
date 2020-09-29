@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'location_screen.dart';
 import 'package:clima/services/location.dart';
 import 'package:clima/services/networking.dart';
 import 'package:clima/utilities/openWheaterApiKey.dart';
@@ -31,6 +33,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
     print(temperature);
     String cityName = weatherData['name'];
     print(cityName);
+
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return LocationScreen();
+    }));
   }
 
   @override
@@ -42,6 +48,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: Center(
+        child: SpinKitRipple(
+          color: Colors.white,
+          size: 100,
+        ),
+      ),
+    );
   }
 }
