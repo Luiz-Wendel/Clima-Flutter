@@ -76,13 +76,20 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                   ),
                   FlatButton(
-                    onPressed: () {
-                      Navigator.push(
+                    onPressed: () async {
+                      var typedCityName = await Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) {
                           return CityScreen();
                         }),
                       );
+
+                      if (typedCityName != null) {
+                        dynamic weatherData =
+                            await weather.getCityWeather(typedCityName);
+
+                        updateUI(weatherData);
+                      }
                     },
                     child: Icon(
                       Icons.location_city,
