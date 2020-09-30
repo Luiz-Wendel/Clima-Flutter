@@ -15,8 +15,7 @@ class _LocationScreenState extends State<LocationScreen> {
   WeatherModel weather = WeatherModel();
   String emoji;
   int temperature;
-  String weatherMessage;
-  String cityName;
+  String fullWeatherMessage;
 
   @override
   void initState() {
@@ -27,12 +26,19 @@ class _LocationScreenState extends State<LocationScreen> {
 
   void updateUI(dynamic weatherData) {
     setState(() {
+      if (weatherData == null) {
+        temperature = 0;
+        emoji = 'Error';
+        fullWeatherMessage = 'Something went wrong while fetching data.';
+        return;
+      }
       var condition = weatherData['weather'][0]['id'];
       emoji = weather.getWeatherIcon(condition);
       double doubleTemperature = weatherData['main']['temp'];
       temperature = doubleTemperature.toInt();
-      weatherMessage = weather.getMessage(temperature);
-      cityName = weatherData['name'];
+      String weatherMessage = weather.getMessage(temperature);
+      String cityName = weatherData['name'];
+      fullWeatherMessage = '$weatherMessage in $cityName';
     });
   }
 
@@ -95,7 +101,7 @@ class _LocationScreenState extends State<LocationScreen> {
               Padding(
                 padding: EdgeInsets.only(right: 15.0),
                 child: Text(
-                  '$weatherMessage in $cityName',
+                  '$fullWeatherMessage',
                   textAlign: TextAlign.right,
                   style: kMessageTextStyle,
                 ),
